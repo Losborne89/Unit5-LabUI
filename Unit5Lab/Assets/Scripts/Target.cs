@@ -39,17 +39,28 @@ public class Target : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Destroy(gameObject);
-        // Explosion particle set to target position and rotation
-        Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+        // Runs only when game is active
+        if(gameManager.IsGameActive)
+        {
+            Destroy(gameObject);
+            // Explosion particle set to target position and rotation
+            Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
 
-        // Update score by their point value every time target clicked
-        gameManager.UpdateScore(pointValue);
+            // Update score by their point value every time target clicked
+            gameManager.UpdateScore(pointValue);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
+
+        // All tartgets except for Bad target trigger Game Over 
+        if (!gameObject.CompareTag("Bad"))
+        {
+            gameManager.GameOver();
+        }
+        
     }
 
     // Generates Random Force
